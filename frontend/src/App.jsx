@@ -1,7 +1,6 @@
 import {useState} from 'react';
-import logo from './assets/images/logo-universal.png';
-import './App.css';
 import {Greet} from "../wailsjs/go/main/App";
+import '@picocss/pico';
 
 function App() {
     const [resultText, setResultText] = useState("Please enter your name below 👇");
@@ -14,14 +13,22 @@ function App() {
     }
 
     return (
-        <div id="App">
-            <img src={logo} id="logo" alt="logo"/>
-            <div id="result" className="result">{resultText}</div>
-            <div id="input" className="input-box">
-                <input id="name" className="input" onChange={updateName} autoComplete="off" name="input" type="text"/>
-                <button className="btn" onClick={greet}>Greet</button>
-            </div>
-        </div>
+		<main className='container'>
+			<div id="App">
+				<div id="result" className="result">{resultText}</div>
+				<div id="input" className="input-box">
+					<input id="name" onChange={updateName} autoComplete="off" type="text"/>
+					<div>
+						<button onClick={greet}>Greet!</button>
+					</div>
+				</div>
+			</div>
+			<div id="App" class="grid">
+			  <a href="#" role="button" class="outline">Link 1</a>
+			  <a href="#" role="button" class="outline">Link 2</a>
+			  <a href="#" role="button" class="outline">Link 3</a>
+			</div>
+		</main>
     )
 }
 

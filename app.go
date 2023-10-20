@@ -5,6 +5,20 @@ import (
 	"fmt"
 )
 
+type (
+	Format int
+
+	Entry struct {
+		Type Format `json:"type"`
+		Content []byte `json:"content"`
+	}
+)
+
+const (
+	FmtText Format = iota
+	FmtImage
+)
+
 // App struct
 type App struct {
 	ctx context.Context
@@ -23,5 +37,13 @@ func (a *App) startup(ctx context.Context) {
 
 // Greet returns a greeting for the given name
 func (a *App) Greet(name string) string {
-	return fmt.Sprintf("Hello %s, It's show time!", name)
+	return fmt.Sprintf("Hello %s, It's your time!", name)
 }
+
+func (a *App) GetBytes() Entry {
+	return Entry{
+		Content: []byte("Hello world!"),
+		Type: FmtText,
+	}
+}
+
