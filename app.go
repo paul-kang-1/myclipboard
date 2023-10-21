@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/base64"
 	"fmt"
 )
 
@@ -9,8 +10,8 @@ type (
 	Format int
 
 	Entry struct {
-		Type Format `json:"type"`
-		Content []byte `json:"content"`
+		Type    Format `json:"type"`
+		Content string `json:"content"`
 	}
 )
 
@@ -40,10 +41,16 @@ func (a *App) Greet(name string) string {
 	return fmt.Sprintf("Hello %s, It's your time!", name)
 }
 
-func (a *App) GetBytes() Entry {
-	return Entry{
-		Content: []byte("Hello world!"),
-		Type: FmtText,
+func (a *App) GetBytes() []Entry {
+	entries := make([]Entry, 10)
+	for i := 0; i < 10; i++ {
+		content := fmt.Sprintf("This is entry %d", i)
+		encoded := base64.StdEncoding.EncodeToString([]byte(content))
+		entries[i] = Entry{
+			Content: encoded,
+			Type:    FmtText,
+		}
 	}
+	return entries
 }
 
