@@ -1,4 +1,4 @@
-module changeme
+module github.com/paul-kang-1/myclipboard
 
 go 1.18
 
