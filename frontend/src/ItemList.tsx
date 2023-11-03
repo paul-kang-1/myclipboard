@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { main } from '../wailsjs/go/models'
-import { GetBytes } from '../wailsjs/go/main/App'
+import { ReadAll } from '../wailsjs/go/backend/App'
+import { backend } from '../wailsjs/go/models'
+import { EventsOn } from '../wailsjs/runtime/runtime'
 
 const ItemList: React.FC = () => {
-	const [data, setData] = useState<Array<main.Entry>>([])
+	const [data, setData] = useState<Array<backend.Entry>>([])
 
 	useEffect(() => {
-		GetBytes().
+		ReadAll().
 			then((result) => {
 				setData(result)
 			})
@@ -14,6 +15,17 @@ const ItemList: React.FC = () => {
 				console.error(error)
 			})
 	}, [])
+
+	EventsOn("newData", () => {
+		ReadAll().
+			then((result) => {
+				setData(result)
+			})
+			.catch((error) => {
+				console.error(error)
+			})
+	}
+	)
 
 	return (
 		<ul>
@@ -24,9 +36,9 @@ const ItemList: React.FC = () => {
 	)
 }
 
-const handleEntry = (data: main.Entry, index: number) => {
+const handleEntry = (data: backend.Entry, index: number) => {
 	if (data.type == 0) {
-		return <li key={index}>{atob(data.content)}</li>
+		return <li key={index}>{data.content}</li>
 	} else if (data.type == 1) {
 		return <li key={index}>Not implemented yet</li>
 	} else {

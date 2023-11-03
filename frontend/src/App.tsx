@@ -5,7 +5,7 @@ import '@picocss/pico';
 function App() {
 	return (
 		<main className='container'>
-			<ItemList/>
+			<ItemList />
 		</main>
 	)
 }
