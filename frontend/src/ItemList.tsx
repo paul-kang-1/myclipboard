@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { ReadAll } from '../wailsjs/go/backend/App'
 import { backend } from '../wailsjs/go/models'
 import { EventsOn } from '../wailsjs/runtime/runtime'
+import { ClipboardSetText } from '../wailsjs/runtime/runtime'
 
 const ItemList: React.FC = () => {
 	const [data, setData] = useState<Array<backend.Entry>>([])
@@ -24,25 +25,31 @@ const ItemList: React.FC = () => {
 			.catch((error) => {
 				console.error(error)
 			})
+		// const newEntry: backend.Entry = {type: 0, content: atob(newData)}
+		// LogInfo("Num entries: " + data.length)
+		// setData([...data, newEntry])
 	}
 	)
 
 	return (
-		<ul>
+		<div>
 			{data.map((entry, index) => (
 				handleEntry(entry, index)
 			))}
-		</ul>
+		</div>
 	)
 }
 
 const handleEntry = (data: backend.Entry, index: number) => {
 	if (data.type == 0) {
-		return <li key={index}>{data.content}</li>
+		return <article key={index} className='card'>
+			<p>{data.content}</p>
+			<button onClick={()=>ClipboardSetText(data.content)}>Copy</button>
+			</article>
 	} else if (data.type == 1) {
-		return <li key={index}>Not implemented yet</li>
+		return <article key={index}>Not implemented yet</article>
 	} else {
-		return <li key={index}>Unidentified type</li>
+		return <article key={index}>Unidentified type</article>
 	}
 }
 
