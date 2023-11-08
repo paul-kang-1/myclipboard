@@ -1,15 +1,14 @@
 .entry {
-	align-items: center;
-	border-left: 0.5px white solid;
-	border-right: 0.5px white solid;
-	border-bottom: 0.25px white solid;
+	border-bottom: 0.25px gray solid;
 	display: flex;
 	flex-direction: row;
-	justify-content: center;
+	align-items: center;
+	justify-content: space-between;
 	margin: 0;
-	max-height: 90px;
+	max-height: 80px;
 	padding: 10px;
-	padding-top: 15px;
+	padding-right: 15px;
+	padding-left: 15px;
 }
 
 .content {
@@ -21,15 +20,30 @@
 	line-clamp: 2;
 	-webkit-box-orient: vertical;
 	text-overflow: ellipsis;
+	margin-top: 5%;
 }
 
 .copyButton {
 	width: 40px;
 	height: 40px;
 	padding: 5px;
+	margin-top: 3%;
 }
 
 .copyButton svg {
+	width: 100%;
+	height: 100%;
+}
+
+.navBar {
+	position: sticky;
+	background: black;
+	top: 0;
+	height: 50px;
+	padding-left: 10px;
+}
+
+.main-container {
 	width: 100%;
 	height: 100%;
 }
