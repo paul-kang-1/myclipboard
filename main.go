@@ -20,8 +20,8 @@ func main() {
 
 	// Create application with options
 	err := wails.Run(&options.App{
-		Title:  "myclipboard",
-		Width:  1024,
+		Title:  "MyClipboard",
+		Width:  512,
 		Height: 768,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
