@@ -2,7 +2,7 @@ package backend
 
 import (
 	"context"
-	"fmt"
+	"strconv"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"golang.design/x/clipboard"
@@ -33,10 +33,11 @@ func (a *App) Startup(ctx context.Context) {
 		panic("Database connection failed")
 	}
 	a.DB.AutoMigrate(&Entry{})
-	a.initWatcher()
+	a.initClipboardWatcher()
+	runtime.EventsOn(a.ctx, "deleteData", a.deleteEventHandler)
 }
 
-func (a *App) initWatcher() error {
+func (a *App) initClipboardWatcher() error {
 	textCh := clipboard.Watch(a.ctx, clipboard.FmtText)
 	go func() {
 		for data := range textCh {
@@ -49,20 +50,24 @@ func (a *App) initWatcher() error {
 			runtime.EventsEmit(a.ctx, "newData", data)
 		}
 	}()
-	runtime.LogInfo(a.ctx, "Shutting down initwatcher")
 	return nil
 }
 
-func (a *App) GetBytes() []Entry {
-	entries := make([]Entry, 10)
-	for i := 0; i < 10; i++ {
-		content := fmt.Sprintf("This is entry %d", i)
-		// encoded := base64.StdEncoding.EncodeToString([]byte(content))
-		entries[i] = Entry{
-			Content: content,
-			Type:    FmtText,
-		}
+func (a *App) deleteEventHandler(data ...any) {
+	id, ok := data[0].(string)
+	if !ok {
+		runtime.LogError(a.ctx, "received invalid data from frontend")
+		return
 	}
-	return entries
+	var err error
+	intId, err := strconv.Atoi(id)
+	if err != nil {
+		runtime.LogErrorf(a.ctx, "Cannot convert ID to int: %v", err)
+		return
+	}
+	if err := a.Delete(intId); err != nil {
+		runtime.LogErrorf(a.ctx, "Error in deleting row %s: %v", intId, err)
+		return
+	}
+	runtime.LogInfof(a.ctx, "Successfully deleted row with ID: %s", id)
 }
-

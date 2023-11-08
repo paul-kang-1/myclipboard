@@ -8,7 +8,7 @@ type (
 	Format int
 
 	Entry struct {
-		ID        uint `gorm:"primaryKey"`
+		ID        uint `gorm:"primaryKey" json:"id"`
 		CreatedAt time.Time
 		Type      Format `json:"type"`
 		Content   string `json:"content"`
@@ -33,4 +33,12 @@ func (a *App) ReadAll() ([]Entry, error) {
 		return nil, res.Error
 	}
 	return entries, nil
+}
+
+func (a *App) Delete(id int) error {
+	tx := a.DB.Delete(&Entry{ID: uint(id)})
+	if tx.Error != nil {
+		return tx.Error
+	}
+	return nil
 }
