@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { ReadAll } from '../wailsjs/go/backend/App'
 import { backend } from '../wailsjs/go/models'
 import { EventsOn, EventsEmit } from '../wailsjs/runtime/runtime'
@@ -6,6 +6,12 @@ import { ClipboardSetText } from '../wailsjs/runtime/runtime'
 
 const ItemList: React.FC = () => {
 	const [data, setData] = useState<Array<backend.Entry>>([])
+	const lastItemRef = useRef<HTMLDivElement>(null)
+	const scrollToBottom = () => {
+		if (lastItemRef.current) {
+			lastItemRef.current.scrollIntoView({ behavior: "smooth" })
+		}
+	}
 
 	useEffect(() => {
 		ReadAll().
@@ -16,6 +22,8 @@ const ItemList: React.FC = () => {
 				console.error(error)
 			})
 	}, [])
+
+	useEffect(scrollToBottom, [data])
 
 	EventsOn("newData", () => {
 		ReadAll().
@@ -46,6 +54,7 @@ const ItemList: React.FC = () => {
 					return <article key={index}>Unidentified type</article>
 				}
 			})}
+			<div ref={lastItemRef} />
 		</div>
 	)
 }
