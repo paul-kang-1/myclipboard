@@ -1,15 +1,19 @@
 .entry {
+	align-items: center;
+	border-left: 0.5px white solid;
+	border-right: 0.5px white solid;
+	border-bottom: 0.25px white solid;
 	display: flex;
 	flex-direction: row;
-	border: 0.5px white solid;
-	padding: 10px;
-	align-items: center;
 	justify-content: center;
-	max-height: 100px;
-	margin: 0
+	margin: 0;
+	max-height: 90px;
+	padding: 10px;
+	padding-top: 15px;
 }
 
 .content {
+	height: 100%;
 	width: 90%;
 	overflow: hidden;
 	display: -webkit-box;
@@ -20,7 +24,6 @@
 }
 
 .copyButton {
-	display: flex;
 	width: 40px;
 	height: 40px;
 	padding: 5px;
